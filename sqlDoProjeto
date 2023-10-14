@@ -1,0 +1,54 @@
+-- Cria o banco de dados "loja_online" se não existir
+CREATE DATABASE IF NOT EXISTS `loja_online`
+  DEFAULT CHARACTER SET utf8mb4
+  DEFAULT COLLATE utf8mb4_0900_ai_ci;
+
+-- Usa o banco de dados "loja_online"
+USE `loja_online`;
+
+-- Tabela 'clientes'
+CREATE TABLE IF NOT EXISTS `clientes` (
+  `id_cliente` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(255) NOT NULL,
+  `endereco` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `senha` varchar(255) NOT NULL,
+  `telefone` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`id_cliente`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabela 'produtos'
+CREATE TABLE IF NOT EXISTS `produtos` (
+  `id_produto` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(255) NOT NULL,
+  `descricao` text,
+  `preco` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id_produto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabela 'carrinho_compras'
+CREATE TABLE IF NOT EXISTS `carrinho_compras` (
+  `id_carrinho` int NOT NULL AUTO_INCREMENT,
+  `id_cliente` int NOT NULL,
+  `id_produto` int NOT NULL,
+  `quantidade` int NOT NULL,
+  PRIMARY KEY (`id_carrinho`),
+  KEY `id_cliente` (`id_cliente`),
+  KEY `id_produto` (`id_produto`),
+  CONSTRAINT `carrinho_compras_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`),
+  CONSTRAINT `carrinho_compras_ibfk_2` FOREIGN KEY (`id_produto`) REFERENCES `produtos` (`id_produto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Tabela 'qualificacoes_produtos'
+CREATE TABLE IF NOT EXISTS `qualificacoes_produtos` (
+  `id_avaliacao` int NOT NULL AUTO_INCREMENT,
+  `id_cliente` int NOT NULL,
+  `id_produto` int NOT NULL,
+  `pontuacao` int NOT NULL,
+  `comentario` text,
+  PRIMARY KEY (`id_avaliacao`),
+  KEY `id_cliente` (`id_cliente`),
+  KEY `id_produto` (`id_produto`),
+  CONSTRAINT `qualificacoes_produtos_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`),
+  CONSTRAINT `qualificacoes_produtos_ibfk_2` FOREIGN KEY (`id_produto`) REFERENCES `produtos` (`id_produto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

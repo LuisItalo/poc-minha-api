@@ -72,14 +72,14 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   const clienteId = req.params.id;
 
-  db.query('DELETE FROM clientes WHERE id = ?', [clienteId], (err, result) => {
+  db.query('DELETE FROM clientes WHERE id_cliente = ?', [clienteId], (err, result) => {
     if (err) {
       console.error('Erro ao excluir cliente no banco de dados:', err);
       res.status(500).json({ mensagem: 'Erro interno do servidor' });
     } else if (result.affectedRows === 0) {
       res.status(404).json({ mensagem: 'Cliente não encontrado' });
     } else {
-      res.json({ mensagem: 'Cliente excluído com sucesso' });
+      res.status(204).json({ mensagem: 'Cliente excluído com sucesso' });
     }
   });
 });
